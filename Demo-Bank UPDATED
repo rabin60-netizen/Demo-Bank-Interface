@@ -1,0 +1,110 @@
+#Creating the Mini Bank ohhh yeah!
+try:
+    with open("bank.txt","x") as f:
+        f.write("0")
+except FileExistsError:
+    pass
+
+def main():
+    print("Welcome to the most efficient bank!!!")
+    print("1)Login\n2)Create Account\n3)Exit")
+    while True:
+        a=getnum()
+        match a:
+                case 1:
+                    log()
+                    print("Account Locked!!,press 3 to exit:",end="")
+                case 3:
+                    print("Exited..")
+                    exit()
+                case _:
+                    print("Try again!!,Just login other features are under construction..")
+                    
+def log():
+    i=3
+    while i>0:
+        x=input("Enter username:")
+        y=input("Enter Pass: ")
+        if x=="max60" and y=="1234":
+            print("1)Check Balance\n2)Widthdraw\n3)Deposite\n4)Transfer Money\n5)Exit")
+            while True:
+                x=getnum()
+                match x:
+                    case 1:
+                        balance()
+                    case 2:
+                        Widthdraw()
+                    case 3:
+                        deposite()
+                    case 4:
+                        transfer()
+                    case 5:
+                        print("Exited..")
+                        exit()
+                    case _:
+                        print("Invalid Input!!")
+        else:
+            print(f"Invalid pass or username!!{i} tries remaining")
+            i-=1
+def balance():
+     amount=amt_reader()
+     print(f"Your current balance is Rs.{amount:,}")
+
+def deposite():
+   print("Enter the amount: ")
+   new_amt=0
+   new_amt+=getnum()
+   corrector_add(new_amt)
+   print("Deposited successfully")
+
+def transfer():
+    print("Enter the amount: ")
+    enter_amt=getnum()
+    amount=amt_reader()
+    while enter_amt>amount:
+         print("Insufficient Balance")
+         enter_amt=getnum()
+       
+    corrector_sub(enter_amt)
+    print("Transferred successfully")
+    
+
+def Widthdraw():
+    print("Enter the amount: ")
+    enter_amt=getnum()
+    amount=amt_reader()
+    while enter_amt>amount:
+        print("Insufficient Balance")
+        enter_amt=getnum()
+           
+    corrector_sub(enter_amt)
+    print("Widthdrawed successfully")
+
+def getnum():
+    while True:
+        try:
+            y=int(input("-->"))
+        except ValueError:
+            print("Try again!")
+        else:
+            return y
+
+def corrector_add(a):
+    old_amt=amt_reader()
+    new_amt=a+old_amt
+    with open("bank.txt","w") as f:
+         f.write(str(new_amt))
+
+def corrector_sub(a):
+    with open("bank.txt","r") as f:
+        old_amt=int(f.read())
+    new_amt=old_amt-a
+    with open("bank.txt","w") as f:
+        f.write(str(new_amt))
+
+def amt_reader():
+    with open("bank.txt","r") as f: 
+        return int(f.read())
+
+main()
+
